@@ -45,25 +45,35 @@ class player:
     
 
     def draw(self,screen):
+        if (self.__class__.__name__ ==  'wizard'):
+            if len(self.Attacks) > 0:
+                for SpellLstPos, Spells in enumerate(self.Attacks):
+                    Spells.spellMove()
+                    Spells.drawSpells(screen)
+                    if Spells.Collided:
+                        self.Attacks.pop(SpellLstPos)
         wid = screen.get_width()
         hei = screen.get_height()
         ImgX = int(60*wid/800)
         ImgY = int(60*hei/600)
-        screen.blit(pygame.transform.scale(pygame.transform.flip(self.CharImg, self.FacingRight,False),(ImgX, ImgY)),(self.X,self.Y))
+        screen.blit(pygame.transform.scale(pygame.transform.flip(self.CharImg, self.FacingRight,False),(ImgX, ImgY)),((self.X*wid/800),(self.Y*wid/800)))
         
 class wizardSpell():
     def __init__(self, Right, X, Y):
-        self.X = X
-        self.Y = Y
+        self.X = X+30 if Right else X
+        self.Y = Y+25
         self.MovingRight = Right
-        self.SpellImg = pygame.image.load('wizard.png').convert()
-        self.SpellImg.set_colorkey((255,255,255))  
+        self.SpellImg = pygame.image.load('wizard spell.png').convert()
+        self.SpellImg.set_colorkey((255,255,255))
+        self.Collided = False
     def spellMove(self):
-        if self.MovingRight: self.X += 1
-        else: self.X -= 1
-    def drawSpells(self, wid, hei):
-        self.wid = wid 
-        self.hei = hei
+        if self.MovingRight: self.X += 5
+        else: self.X -= 5
+        if self.X > 800 or self.X < -10:
+            self.Collided = True
+    def drawSpells(self,screen):
+        self.wid = screen.get_width()
+        self.hei = screen.get_height()
         ImgX = int(20*self.wid/800)
         ImgY = int(20*self.hei/600)
         screen.blit(pygame.transform.scale(pygame.transform.flip(self.SpellImg, self.MovingRight,False),(ImgX, ImgY)),(self.X,self.Y))
