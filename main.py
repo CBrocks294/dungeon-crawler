@@ -146,7 +146,7 @@ class mainClass:
                 Changed = False
             CurrentCharactor.move()
             for Char in (Charactors):
-                Char.draw(screen, wid, hei)
+                Char.draw(screen)
                 Char.VeloCalcs()
 
             #pygame.draw.rect(screen,(0,255,0),pygame.Rect(100*wid/800,10*hei/600,10*wid/800,100*hei/600))
