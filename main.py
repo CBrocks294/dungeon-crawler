@@ -10,13 +10,13 @@ class player:
     def move(self):
         pygame.event.get()
         Pressed = pygame.key.get_pressed()
-        if Pressed[pygame.K_w] and self.Grounded:
-            self.Velocity[1] -= 10
-            #Grounded = False
-        if Pressed[pygame.K_a] and self.Velocity[1] >= -3:
+        if Pressed[pygame.K_w] and self.Grounded == True:
+            self.Velocity[1] -= 50
+            self.Grounded = False
+        if Pressed[pygame.K_a] and self.Velocity[0] >= -30:
             self.Velocity[0] -= 1
             self.FacingRight = False
-        if Pressed[pygame.K_d] and self.Velocity[1] <= 3:
+        if Pressed[pygame.K_d] and self.Velocity[0] <= 30:
             self.Velocity[0] += 1
             self.FacingRight = True
         if Pressed[pygame.K_s]:
@@ -32,12 +32,16 @@ class player:
             self.Velocity[0] -= 0.75
         elif self.Velocity[0] < 0:
             self.Velocity[0] += 0.75
-        #self.Velocity = self.Velocity/self.Velocity*-1
         #gravity
-        #self.Velocity[1] += 2
+        self.Velocity[1] += 2
         #checks for collitions
-        if (self.X >= 750 and self.Velocity[0] > 0) or (self.X <= -10 and self.Velocity[0] < 0):
+        if (self.X >= 770 and self.Velocity[0] > 0) or (self.X <= -10 and self.Velocity[0] < 0):
             self.Velocity[0] = 0
+        if self.Y >= 560 and self.Velocity[1] > 0:
+            self.Velocity[1] = 0
+            self.Y = 560
+            self.Grounded = True
+            
 
         #adds momentum
         self.X += self.Velocity[0]/10
