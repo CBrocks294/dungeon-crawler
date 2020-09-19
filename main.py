@@ -13,10 +13,10 @@ class player:
         if Pressed[pygame.K_w] and self.Grounded:
             self.Velocity[1] -= 10
             #Grounded = False
-        if Pressed[pygame.K_a] and self.Velocity[1] >= -5:
+        if Pressed[pygame.K_a] and self.Velocity[1] >= -3:
             self.Velocity[0] -= 1
             self.FacingRight = False
-        if Pressed[pygame.K_d] and self.Velocity[1] <= 5:
+        if Pressed[pygame.K_d] and self.Velocity[1] <= 3:
             self.Velocity[0] += 1
             self.FacingRight = True
         if Pressed[pygame.K_s]:
@@ -40,8 +40,8 @@ class player:
             self.Velocity[0] = 0
 
         #adds momentum
-        self.X += self.Velocity[0]/5
-        self.Y += self.Velocity[1]/5
+        self.X += self.Velocity[0]/10
+        self.Y += self.Velocity[1]/10
     
 
     def draw(self,screen):
@@ -54,28 +54,28 @@ class player:
                         self.Attacks.pop(SpellLstPos)
         wid = screen.get_width()
         hei = screen.get_height()
-        ImgX = int(60*wid/800)
-        ImgY = int(60*hei/600)
+        ImgX = int(40*wid/800)
+        ImgY = int(40*hei/600)
         screen.blit(pygame.transform.scale(pygame.transform.flip(self.CharImg, self.FacingRight,False),(ImgX, ImgY)),((self.X*wid/800),(self.Y*wid/800)))
         
 class wizardSpell():
     def __init__(self, Right, X, Y):
         self.X = X+30 if Right else X
-        self.Y = Y+25
+        self.Y = Y+20
         self.MovingRight = Right
         self.SpellImg = pygame.image.load('wizard spell.png').convert()
         self.SpellImg.set_colorkey((255,255,255))
         self.Collided = False
     def spellMove(self):
-        if self.MovingRight: self.X += 5
-        else: self.X -= 5
+        if self.MovingRight: self.X += 4
+        else: self.X -= 4
         if self.X > 800 or self.X < -10:
             self.Collided = True
     def drawSpells(self,screen):
         self.wid = screen.get_width()
         self.hei = screen.get_height()
-        ImgX = int(20*self.wid/800)
-        ImgY = int(20*self.hei/600)
+        ImgX = int(10*self.wid/800)
+        ImgY = int(10*self.hei/600)
         screen.blit(pygame.transform.scale(pygame.transform.flip(self.SpellImg, self.MovingRight,False),(ImgX, ImgY)),(self.X,self.Y))
 
 
