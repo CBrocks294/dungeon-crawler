@@ -7,7 +7,7 @@ class player:
         self.Grounded = True
         self.FacingRight = True
         self.Attacked = False
-    def move(self):
+    def move(self,screen):
         pygame.event.get()
         Pressed = pygame.key.get_pressed()
         if Pressed[pygame.K_w] and self.Grounded == True:
@@ -21,7 +21,7 @@ class player:
             self.FacingRight = True
         if Pressed[pygame.K_s]:
             if not self.Attacked:
-                self.attack()
+                self.attack(screen)
                 self.Attacked = True
         else: self.Attacked = False
 
@@ -60,12 +60,13 @@ class player:
         hei = screen.get_height()
         ImgX = int(40*wid/800)
         ImgY = int(40*hei/600)
-        screen.blit(pygame.transform.scale(pygame.transform.flip(self.CharImg, self.FacingRight,False),(ImgX, ImgY)),((self.X*wid/800),(self.Y*wid/800)))
+        screen.blit(pygame.transform.scale(pygame.transform.flip(self.CharImg, self.FacingRight,False),(ImgX, ImgY)),((self.X*wid/800),(self.Y*hei/600)))
         
 class wizardSpell():
-    def __init__(self, Right, X, Y):
+    def __init__(self, Right, X, Y,screen):
         self.X = X+30 if Right else X
-        self.Y = Y+20
+        hei = screen.get_height()
+        self.Y = (Y+20)*hei/600
         self.MovingRight = Right
         self.SpellImg = pygame.image.load('wizard spell.png').convert()
         self.SpellImg.set_colorkey((255,255,255))
@@ -76,11 +77,11 @@ class wizardSpell():
         if self.X > 800 or self.X < -10:
             self.Collided = True
     def drawSpells(self,screen):
-        self.wid = screen.get_width()
-        self.hei = screen.get_height()
-        ImgX = int(10*self.wid/800)
-        ImgY = int(10*self.hei/600)
-        screen.blit(pygame.transform.scale(pygame.transform.flip(self.SpellImg, self.MovingRight,False),(ImgX, ImgY)),(self.X,self.Y))
+        wid = screen.get_width()
+        hei = screen.get_height()
+        ImgX = int(10*wid/800)
+        ImgY = int(10*hei/600)
+        screen.blit(pygame.transform.scale(pygame.transform.flip(self.SpellImg, self.MovingRight,False),(ImgX, ImgY)),(self.X*wid/800,self.Y))
 
 
 class wizard(player):
@@ -91,9 +92,9 @@ class wizard(player):
         self.CharImg.set_colorkey((255,255,255))  
         self.Attacks = []
 
-    def attack(self):
+    def attack(self,screen):
         if len(self.Attacks) <= 5:
-            self.Attacks.append(wizardSpell(self.FacingRight, self.X, self.Y))
+            self.Attacks.append(wizardSpell(self.FacingRight, self.X, self.Y,screen))
 
 class knight(player):
     def __init__(self):
@@ -101,7 +102,7 @@ class knight(player):
         super().__init__()
         self.CharImg = pygame.image.load('knight.png').convert()
         self.CharImg.set_colorkey((255,255,255))  
-    def attack(self):
+    def attack(self,screen):
         pass
 
 
@@ -111,7 +112,7 @@ class shield(player):
         self.X = 100
         self.CharImg = pygame.image.load('shield.png').convert()
         self.CharImg.set_colorkey((255,255,255))  
-    def attack(self):
+    def attack(self, attack):
         pass
 
 class backing:
@@ -133,7 +134,7 @@ class mainClass:
         screen=pygame.display.set_mode((800,600),pygame.RESIZABLE)
         done = False
         clock = pygame.time.Clock()
-        Charactors = [knight(), wizard(),shield()]
+        Charactors = [knight(),shield(), wizard()]
         CharactorLstPos = 0
         CurrentCharactor = Charactors[CharactorLstPos]
         Changed = False
@@ -158,7 +159,7 @@ class mainClass:
                     Changed = True  
             else:
                 Changed = False
-            CurrentCharactor.move()
+            CurrentCharactor.move(screen)
             for Char in (Charactors):
                 Char.draw(screen)
                 Char.VeloCalcs()
