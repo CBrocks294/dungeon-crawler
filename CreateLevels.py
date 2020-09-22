@@ -23,7 +23,7 @@ class makeLvls():
 		for Y, YLst in enumerate(self.Background):
 			for X, ItemType in enumerate(YLst):
 				if ItemType == 1:
-					screen.blit(pygame.transform.scale(self.BlocksImg,(int(20*wid/800), int(20*hei/600))),(int(X*20*wid/800),int(Y*20*hei/600)))
+					screen.blit(pygame.transform.scale(self.BlocksImg,(int(20*wid/800), int(21*hei/600))),(int(X*20*wid/800),int(Y*20*hei/600)))
 
 class backing:
 	def __init__(self):
