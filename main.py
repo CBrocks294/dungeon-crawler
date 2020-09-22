@@ -145,8 +145,7 @@ class mainClass:
                 if event.type == pygame.QUIT:
                     done = True
             if event.type == pygame.VIDEORESIZE:
-                screen=pygame.display.set_mode((event.w,event.h),pygame.RESIZABLE)
-           
+                screen=pygame.display.set_mode((event.w,event.h),pygame.RESIZABLE)       
             Backing.drawBacking(screen)
             Pressed = pygame.key.get_pressed()
             wid = screen.get_width()
@@ -163,16 +162,9 @@ class mainClass:
             for Char in (Charactors):
                 Char.draw(screen)
                 Char.VeloCalcs()
-
-            #pygame.draw.rect(screen,(0,255,0),pygame.Rect(100*wid/800,10*hei/600,10*wid/800,100*hei/600))
-            
             clock.tick(100)
             pygame.display.update()
             screen.fill((0,0,0))
         pygame.quit()
 
-
-
 Main = mainClass()
-
-
